@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPAS - Sistema de Seleção</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="font-sans antialiased h-screen flex overflow-hidden">
+
+    <aside class="w-64 bg-sidebar border-r border-custom flex flex-col justify-between">
+        <div>
+            <div class="p-6 border-b border-custom">
+                <h1 class="text-xl font-bold tracking-wider text-blue-400">IPAS</h1>
+                <p class="text-xs text-muted">Sistema de Seleção</p>
+            </div>
+            
+            <nav class="mt-6 px-3 space-y-1">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="menu-item active w-full text-left py-3 px-4 rounded-lg text-sm font-medium transition flex items-center">
+                    Dashboard
+                </button>
+                <button onclick="switchTab('candidatos')" id="btn-candidatos" class="menu-item w-full text-left py-3 px-4 rounded-lg text-sm font-medium transition flex items-center">
+                    Candidatos
+                </button>
+                <button onclick="switchTab('cursos')" id="btn-cursos" class="menu-item w-full text-left py-3 px-4 rounded-lg text-sm font-medium transition flex items-center">
+                    Cursos
+                </button>
+                <button onclick="switchTab('exames')" id="btn-exames" class="menu-item w-full text-left py-3 px-4 rounded-lg text-sm font-medium transition flex items-center">
+                    Exames
+                </button>
+                <button onclick="switchTab('pagamentos')" id="btn-pagamentos" class="menu-item w-full text-left py-3 px-4 rounded-lg text-sm font-medium transition flex items-center">
+                    Pagamentos
+                </button>
+                <button onclick="switchTab('relatorios')" id="btn-relatorios" class="menu-item w-full text-left py-3 px-4 rounded-lg text-sm font-medium transition flex items-center">
+                    Relatórios
+                </button>
+            </nav>
+        </div>
+        <div class="p-4 border-t border-custom text-center text-xs text-muted">
+            Ano Letivo 2025/2026
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-y-auto">
+        
+        <header class="h-16 border-b border-custom flex items-center justify-between px-8 bg-sidebar">
+            <div id="header-title" class="text-sm font-medium text-muted">
+                Ano Letivo 2025/2026 — Processo de admissão aberto
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm font-medium">Usuário Admin</span>
+            </div>
+        </header>
+
+        <div class="p-8 flex-1">
+
+            <section id="tab-dashboard" class="tab-content active space-y-6">
+                <h2 class="text-2xl font-semibold">Dashboard</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-card p-6 rounded-xl border border-custom">
+                        <p class="text-xs font-semibold text-muted tracking-wide uppercase">Total de candidatos</p>
+                        <p id="dash-total-candidatos" class="text-3xl font-bold mt-2 text-blue-400">0</p>
+                        <span class="text-[10px] text-green-400">● Sistema ativo</span>
+                    </div>
+                    <div class="bg-card p-6 rounded-xl border border-custom">
+                        <p class="text-xs font-semibold text-muted tracking-wide uppercase">Total de cursos</p>
+                        <p id="dash-total-cursos" class="text-3xl font-bold mt-2 text-emerald-400">0</p>
+                        <span class="text-[10px] text-muted">Cursos registrados</span>
+                    </div>
+                    <div class="bg-card p-6 rounded-xl border border-custom">
+                        <p class="text-xs font-semibold text-muted tracking-wide uppercase">Pagamentos</p>
+                        <p id="dash-total-pagamentos" class="text-3xl font-bold mt-2 text-amber-400">0</p>
+                        <span class="text-[10px] text-muted">Confirmados</span>
+                    </div>
+                    <div class="bg-card p-6 rounded-xl border border-custom">
+                        <p class="text-xs font-semibold text-muted tracking-wide uppercase">Exames realizados</p>
+                        <p id="dash-total-exames" class="text-3xl font-bold mt-2 text-purple-400">0</p>
+                        <span class="text-[10px] text-muted">Processados</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-card p-6 rounded-xl border border-custom h-64 overflow-y-auto">
+                        <h3 class="text-sm font-semibold mb-4 text-muted">Candidatos por curso</h3>
+                        <div id="dash-candidatos-curso-lista" class="text-xs text-muted space-y-2">
+                            Nenhum dado registrado.
+                        </div>
+                    </div>
+                    <div class="bg-card p-6 rounded-xl border border-custom">
+                        <h3 class="text-sm font-semibold mb-4 text-muted">Estado das candidaturas</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center bg-input p-3 rounded-lg border border-custom">
+                                <span class="text-sm">Pendentes</span>
+                                <span id="badge-pendentes" class="bg-badge-amber text-amber-400 text-xs px-2.5 py-1 rounded-full font-bold">0 candidatos</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-input p-3 rounded-lg border border-custom">
+                                <span class="text-sm">Aprovados</span>
+                                <span id="badge-aprovados" class="bg-badge-emerald text-emerald-400 text-xs px-2.5 py-1 rounded-full font-bold">0 candidatos</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-input p-3 rounded-lg border border-custom">
+                                <span class="text-sm">Em análise</span>
+                                <span id="badge-analise" class="bg-badge-blue text-blue-400 text-xs px-2.5 py-1 rounded-full font-bold">0 candidatos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-candidatos" class="tab-content space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-semibold">Candidatos</h2>
+                    <button onclick="toggleFormCandidato()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg font-medium transition">
+                        Novo Candidato
+                    </button>
+                </div>
+
+                <div id="form-candidato-container" class="hidden bg-card p-6 rounded-xl border border-custom space-y-6">
+                    <form id="form-candidato" onsubmit="salvarCandidato(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-muted mb-2">Nome Completo</label>
+                                <input type="text" id="cand-nome" required class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-muted mb-2">BI / Dom. Base</label>
+                                <input type="text" id="cand-bi" required class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-muted mb-2">Sexo</label>
+                                <select id="cand-sexo" class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Feminino</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-muted mb-2">Número de BI</label>
+                                <input type="text" id="cand-num-bi" required class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <h3 class="text-sm font-semibold text-muted mt-6 mb-3 border-b border-custom pb-2">Dados Académicos</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-muted mb-2">Escola</label>
+                                <input type="text" id="cand-escola" class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-muted mb-2">Média</label>
+                                <input type="number" step="0.1" id="cand-media" class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <h3 class="text-sm font-semibold text-muted mt-6 mb-3 border-b border-custom pb-2">Candidatura</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-muted mb-2">Curso</label>
+                                <select id="cand-curso" class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                                    </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-muted mb-2">Estado</label>
+                                <select id="cand-estado" class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                                    <option value="Pendente">Pendente</option>
+                                    <option value="Em análise">Em análise</option>
+                                    <option value="Aprovado">Aprovado</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-6 py-2.5 rounded-lg font-medium transition">
+                                Finalizar Cadastro
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-card rounded-xl border border-custom overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-custom bg-slate-800/50 text-xs font-semibold text-muted uppercase tracking-wider">
+                                <th class="p-4">Nome</th>
+                                <th class="p-4">Curso</th>
+                                <th class="p-4">Sexo</th>
+                                <th class="p-4">Estado</th>
+                                <th class="p-4">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-candidatos" class="text-sm divide-y divide-custom"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tab-cursos" class="tab-content space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-semibold">Cursos</h2>
+                    <button onclick="salvarCursoRapido()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg font-medium transition">
+                        Adicionar Curso
+                    </button>
+                </div>
+
+                <div class="bg-card p-6 rounded-xl border border-custom grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-muted mb-2">Nome do curso</label>
+                        <input type="text" id="curso-nome" placeholder="Ex: Engenharia Informática" class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-muted mb-2">Coordenador</label>
+                        <input type="text" id="curso-coordenador" placeholder="Ex: Dr. Álvaro" class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-muted mb-2">Modalidade</label>
+                        <input type="text" id="curso-modalidade" placeholder="Ex: Presencial" class="w-full bg-input border border-custom rounded-lg p-2.5 text-sm focus:outline-none focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div class="bg-card rounded-xl border border-custom overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-custom bg-slate-800/50 text-xs font-semibold text-muted uppercase tracking-wider">
+                                <th class="p-4">Curso</th>
+                                <th class="p-4">Coordenador</th>
+                                <th class="p-4">Modalidade</th>
+                                <th class="p-4">Total de Alunos</th>
+                                <th class="p-4">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-cursos" class="text-sm divide-y divide-custom"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tab-exames" class="tab-content space-y-6">
+                <h2 class="text-2xl font-semibold">Exames</h2>
+                <div class="bg-card rounded-xl border border-custom overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-custom bg-slate-800/50 text-xs font-semibold text-muted uppercase tracking-wider">
+                                <th class="p-4">Candidato</th>
+                                <th class="p-4">Nota</th>
+                                <th class="p-4">Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-exames" class="text-sm divide-y divide-custom"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tab-pagamentos" class="tab-content space-y-6">
+                <h2 class="text-2xl font-semibold">Pagamentos</h2>
+                <div class="bg-card rounded-xl border border-custom overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-custom bg-slate-800/50 text-xs font-semibold text-muted uppercase tracking-wider">
+                                <th class="p-4">Candidato</th>
+                                <th class="p-4">Valor</th>
+                                <th class="p-4">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-pagamentos" class="text-sm divide-y divide-custom"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tab-relatorios" class="tab-content space-y-6">
+                <h2 class="text-2xl font-semibold">Relatórios</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-card p-6 rounded-xl border border-custom">
+                        <p class="text-xs font-semibold text-muted uppercase">Total Candidatos</p>
+                        <p id="rel-total-candidatos" class="text-2xl font-bold mt-1">0</p>
+                    </div>
+                    <div class="bg-card p-6 rounded-xl border border-custom">
+                        <p class="text-xs font-semibold text-muted uppercase">Total Cursos</p>
+                        <p id="rel-total-cursos" class="text-2xl font-bold mt-1">0</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

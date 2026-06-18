@@ -1,0 +1,114 @@
+body {
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.bg-sidebar { 
+    background-color: #1e293b;
+}
+
+.bg-card { 
+    background-color: #1e293b;
+}
+
+.text-muted { 
+    color: #94a3b8;
+}
+
+.border-custom { 
+    border-color: #1e293b;
+}
+
+.bg-input { 
+    background-color: #0f172a; 
+}
+
+.bg-badge-amber { background-color: rgba(245, 158, 11, 0.15); }
+.bg-badge-emerald { background-color: rgba(16, 185, 129, 0.15); }
+.bg-badge-blue { background-color: rgba(59, 130, 246, 0.15); }
+
+.menu-item, button, input, select, tr {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#tab-dashboard .bg-card,
+#tab-relatorios .bg-card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    opacity: 0.95;
+    will-change: transform, box-shadow;
+}
+
+#tab-dashboard .bg-card:hover,
+#tab-relatorios .bg-card:hover {
+    opacity: 1;
+    transform: translateY(-1px) scale(1.003);
+    box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    border-color: #334155;
+}
+
+#dash-candidatos-curso-lista div {
+    border-color: #aaa !important;
+    font-size: 14px; 
+}
+
+.divide-custom > :not([hidden]) ~ :not([hidden]) {
+    border-color: rgba(51, 65, 85, 0.4);
+}
+
+tbody tr:hover {
+    background-color: rgba(51, 65, 85, 0.25) !important;
+}
+
+.tab-content { 
+    display: none; 
+    animation: fadeIn 0.3s ease-out;
+}
+
+.tab-content.active { 
+    display: block; 
+}
+
+.menu-item {
+    color: #94a3b8;
+    position: relative;
+}
+
+.menu-item:hover {
+    background-color: rgba(51, 65, 85, 0.5);
+    color: #f8fafc;
+    padding-left: 1.25rem;
+}
+
+.menu-item.active {
+    background-color: #334155;
+    color: #f8fafc;
+    border-left: 4px solid #3b82f6; 
+    font-weight: 600;
+}
+
+#form-candidato-container:not(.hidden) {
+    animation: slideDown 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
